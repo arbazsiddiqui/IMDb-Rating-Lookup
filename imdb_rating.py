@@ -12,7 +12,7 @@ from os.path import basename
 for arg in sys.argv:
     name = basename(os.path.splitext(arg)[0])
 
-#TODO implement sendto feature
+
 
 replace = [".avi","1.4","5.1","-","DVDRip","BRRip","XviD","1CDRip","aXXo","[","]","(",")","{","}","{{","}}"
     "x264","x265","720p","StyLishSaLH (StyLish Release)","DvDScr","MP3","HDRip","WebRip",
@@ -39,15 +39,17 @@ for y in range(1900,2015):
         if str(y) in name:
             name = name.replace(str(y)," ")
 
-url = "http://www.omdbapi.com/?t="+name
+url = "http://www.omdbapi.com/?t="+name+"&tomatoes=true"
 response = urllib.urlopen(url).read()
 jsonvalues = json.loads(response)
+title  = jsonvalues["Title"]
 rating = jsonvalues["imdbRating"]
 genre = jsonvalues["Genre"]
 year = jsonvalues["Year"]
 Actors = jsonvalues["Actors"]
 Runtime = jsonvalues["Runtime"]
-#TODO rottentomato ratings
+rotten = jsonvalues["tomatoRating"]
+
 
 window = Tkinter.Tk()
 window.wm_withdraw()
@@ -56,4 +58,4 @@ window.wm_withdraw()
 
 #centre screen message
 window.geometry("1x1+"+str(window.winfo_screenwidth()/2)+"+"+str(window.winfo_screenheight()/2))
-tkMessageBox.showinfo(title="Rating and genre", message="IMDb Rating = " + rating + "\n" +"Genre = " + genre + "\n" + "Year = " + year + "\n" + "Actors = " + Actors + "\n" + "Runtime = " + Runtime)
+tkMessageBox.showinfo(title= title, message="IMDb Rating = " + rating + "\n" +"Genre = " + genre + "\n" + "Year = " + year + "\n" + "Actors = " + Actors + "\n" + "Runtime = " + Runtime + "\n" + "Rotten Tomatoes user rating = " + rotten)
